@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--springMvc扫描包只扫描Controller和异常映射处理器-->
+    <context:component-scan base-package="com.houpu.crowd.mvc" ></context:component-scan>
+    <!--配置视图处理-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!--开启springMvc的注解-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- Spring MVC提供的简单异常处理器SimpleMappingExceptionResolver-全局异常配置 start -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="com.houpu.crowd.exception.AccessPermissionsException">admin-login</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <mvc:view-controller path="/admin/do/login/page.html" view-name="admin-login"></mvc:view-controller>
+    <mvc:view-controller path="/admin/to/main/page.html" view-name="admin-main"></mvc:view-controller>
+    <mvc:view-controller path="/admin/to/main/login/page.html" view-name="admin-login"></mvc:view-controller>
+    <mvc:view-controller path="/admin/to/add.html" view-name="admin-add"></mvc:view-controller>
+    <mvc:view-controller path="/admin/to/role.html" view-name="role/role-page"></mvc:view-controller>
+    <mvc:view-controller path="/menu/to/page.html" view-name="menu/menu-page"></mvc:view-controller>
+    <!--interceptors拦截器-->
+    <!--<mvc:interceptors>
+        &lt;!&ndash;<bean class="com.ma.interceptor.CustomeInterceptor" />&ndash;&gt;
+        &lt;!&ndash;拦截器1&ndash;&gt;
+        <mvc:interceptor>
+            &lt;!&ndash;配置拦截器的作用路径&ndash;&gt;
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/admin/do/login.html"/>
+            <mvc:exclude-mapping path="/admin/do/login/page.html"/>
+            <mvc:exclude-mapping path="/admin/do/loginOut.html"/>
+            <mvc:exclude-mapping path="/admin/to/main/login/page.html"/>
+            &lt;!&ndash;定义在<mvc:interceptor>下面的表示匹配指定路径的请求才进行拦截&ndash;&gt;
+            <bean class="com.houpu.crowd.mvc.interceptors.LoginInterceptors"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+</beans>
